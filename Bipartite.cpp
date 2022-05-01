@@ -14,3 +14,12 @@ void dfs(int u) {
 		}
 	}
 }
+
+
+//assign base color and then call
+for1(i, n) {
+	if (color[i] == -1) {
+		color[i] = 0;
+		dfs(i);
+	}
+}
