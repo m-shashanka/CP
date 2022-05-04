@@ -79,21 +79,4 @@ void range_update(int si, int ss, int se, int qs, int qe, int val) {
     st[si] = st[2 * si] + st[2 * si + 1];
 }
 
-//call as point_update(1,1,n,query_index);
-/* update the value in array in O(1) time then pass that index as query_index to this function */
-void point_update(int si, int ss, int se, int qi) {
-    if (ss == se) {
-        st[si] = arr[qi];
-        return;
-    }
-
-    int mid = (ss + se) / 2;
-
-    if (qi <= mid)
-        point_update(2 * si, ss, mid, qi);
-    else
-        point_update(2 * si + 1, mid + 1, se, qi);
-
-    st[si] = func(st[2 * si], st[2 * si + 1]);
-}
 
