@@ -1,6 +1,6 @@
 //prefer bfs over dfs as it checks for cycle also
 
-vi topo(int n) {
+vi topoSort(int n) {
 	vi indegree(n + 1);
 	for1(u, n) {
 		for (auto v : G[u])
