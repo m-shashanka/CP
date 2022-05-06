@@ -15,7 +15,7 @@ int findPar(int node) {
 	return parent[node] = findPar(parent[node]);
 }
 
-void union(int u, int v) {
+void Union(int u, int v) {
 	u = findPar(u);
 	v = findPar(v);
 
