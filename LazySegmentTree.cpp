@@ -25,11 +25,11 @@ int query(int si, int ss, int se, int qs, int qe) {
     if (lazy[si] != 0) {
         int pending_update = lazy[si];
         lazy[si] = 0;
-        st[si] += pending_update * (se - ss + 1);
+        st[si] = pending_update * (se - ss + 1);
 
         if (ss != se) {
-            lazy[2 * si] += pending_update;
-            lazy[2 * si + 1] += pending_update;
+            lazy[2 * si] = pending_update;
+            lazy[2 * si + 1] = pending_update;
         }
     }
 
@@ -50,11 +50,11 @@ void range_update(int si, int ss, int se, int qs, int qe, int val) {
     if (lazy[si] != 0) {
         int pending_update = lazy[si];
         lazy[si] = 0;
-        st[si] += pending_update * (se - ss + 1);
+        st[si] = pending_update * (se - ss + 1);
 
         if (ss != se) {
-            lazy[2 * si] += pending_update;
-            lazy[2 * si + 1] += pending_update;
+            lazy[2 * si] = pending_update;
+            lazy[2 * si + 1] = pending_update;
         }
     }
 
@@ -62,11 +62,11 @@ void range_update(int si, int ss, int se, int qs, int qe, int val) {
 
     if (ss >= qs && se <= qe) {
         int update = (se - ss + 1) * val;
-        st[si] += update;
+        st[si] = update;
 
         if (ss != se) {
-            lazy[2 * si] += val;
-            lazy[2 * si + 1] += val;
+            lazy[2 * si] = val;
+            lazy[2 * si + 1] = val;
         }
         return;
     }
