@@ -1,4 +1,4 @@
-//tarjan's algorithm
+//Tarjan's algorithm
 
 //tin[i] -> time of insertion of this node
 //low[i] -> lowest time to reach this node
