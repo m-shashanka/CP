@@ -1,3 +1,25 @@
+//tarjan's algorithm
+
+//tin[i] -> time of insertion of this node
+//low[i] -> lowest time to reach this node
+
+void dfs(int u, int p, vector<bool> &vis, vector<int> &tin, vector<int> &low, int &timer) {
+	vis[u] = true;
+	tin[u] = low[u] = timer++;
+	for (auto v : G[u]) {
+		if (v == p)
+			continue;
+		if (vis[v])
+			low[u] = min(low[u], low[v]);
+		else {
+			dfs(v, u, vis, tin, low, e, G, timer);
+			if (low[v] > tin[u])
+				cout << "Bridge from " << u << " to " << v << endl;
+			low[u] = min(low[u], low[v]);
+		}
+	}
+}
+
 //dp solution
 
 //dp[i] -> lowest level you can reach from i following only back edges from subtree of i
