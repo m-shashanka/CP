@@ -1,5 +1,7 @@
 //dp solution
 
+//dp[i] -> lowest level you can reach from i following only back edges from subtree of i
+
 void dfs(int u, int p, vector<bool> &vis, vector<int> &dp, vector<int> &lvl) {
 	vis[u] = true;
 	if (p != -1)
