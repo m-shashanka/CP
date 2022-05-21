@@ -12,7 +12,7 @@ void dfs(int u, int p, vector<bool> &vis, vector<int> &tin, vector<int> &low, in
 		if (vis[v])
 			low[u] = min(low[u], low[v]);
 		else {
-			dfs(v, u, vis, tin, low, e, G, timer);
+			dfs(v, u, vis, tin, low, timer);
 			if (low[v] > tin[u])
 				cout << "Bridge from " << u << " to " << v << endl;
 			low[u] = min(low[u], low[v]);
