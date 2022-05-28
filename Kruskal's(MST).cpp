@@ -24,7 +24,7 @@ int findPar(int node) {
 	return parent[node] = findPar(parent[node]);
 }
 
-void union(int u, int v) {
+void Union(int u, int v) {
 	u = findPar(u);
 	v = findPar(v);
 
@@ -52,7 +52,7 @@ int spanningTree(int n, vector<Edge> &e) {
 		if (findPar(x.u) != findPar(x.v)) {
 			cost += x.wt;
 			mst.push_back(x);
-			union(x.u, x.v);
+			Union(x.u, x.v);
 		}
 	}
 
