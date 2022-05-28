@@ -11,7 +11,7 @@ struct Edge {
 
 int parent[N], rank[N];
 
-void makeSet(n) {
+void makeSet(int n) {
 	for1(i, n) {
 		parent[i] = i;
 		rank[i] = 0;
