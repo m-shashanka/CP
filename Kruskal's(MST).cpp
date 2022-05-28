@@ -39,7 +39,9 @@ void union(int u, int v) {
 }
 
 int spanningTree(int n, vector<Edge> &e) {
-	sort(e.begin(), e.end());
+	sort(e.begin(), e.end(),[](const Edge &a, const Edge &b){
+		return a.wt < b.wt;
+	});
 
 	makeSet(n);
 
