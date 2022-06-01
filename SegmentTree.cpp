@@ -47,7 +47,7 @@ class SegTree {
 public:
 
 	SegTree(vl &a) {
-		n = sz(a);
+		n = sz(a) - 1;
 		arr = a;
 		st.resize(4 * n);
 		build(1, 1, n);
