@@ -1,51 +1,65 @@
+class SegTree {
+	vl arr, st;
+	int n;
 
-const int N = 100;
+	ll query(int si, int ss, int se, int qs, int qe) {
+		if (ss > qe || se < qs)
+			return SOME_INVALID_DATA;
 
-int arr[N], st[4 * N];
+		if (ss >= qs && se <= qe)
+			return st[si];
 
-//call as build(1,1,arr_size);
-void build(int si, int ss, int se) {
-    if (ss == se) {
-        st[si] = arr[ss];
-        return;
-    }
+		int mid = (ss + se) / 2;
 
-    int mid = (ss + se) / 2;
+		return func(query(2 * si, ss, mid, qs, qe), query(2 * si + 1, mid + 1, se, qs, qe));
+	}
 
-    build(2 * si, ss, mid);
-    build(2 * si + 1, mid + 1, se);
+	void build(int si, int ss, int se) {
+		if (ss == se) {
+			st[si] = arr[ss];
+			return;
+		}
 
-    st[si] = func(st[2 * si], st[2 * si + 1]);
-}
+		int mid = (ss + se) / 2;
 
-//call as query(1,1,n,query_start,query_end);
-int query(int si, int ss, int se, int qs, int qe) {
-    if (ss > qe || se < qs)
-        return SOME_INVALID_DATA;
+		build(2 * si, ss, mid);
+		build(2 * si + 1, mid + 1, se);
 
-    if (ss >= qs && se <= qe)
-        return st[si];
+		st[si] = func(st[2 * si], st[2 * si + 1]);
+	}
 
-    int mid = (ss + se) / 2;
+	void point_update(int si, int ss, int se, int qi) {
+		if (ss == se) {
+			st[si] = arr[qi];
+			return;
+		}
 
-    return func(query(2 * si, ss, mid, qs, qe), query(2 * si + 1, mid + 1, se, qs, qe));
-}
+		int mid = (ss + se) / 2;
 
-//call as point_update(1,1,n,query_index);
-/* update the value in array in O(1) time then pass that index as query_index to this function */
-void point_update(int si, int ss, int se, int qi) {
-    if (ss == se) {
-        st[si] = arr[qi];
-        return;
-    }
+		if (qi <= mid)
+			point_update(2 * si, ss, mid, qi);
+		else
+			point_update(2 * si + 1, mid + 1, se, qi);
 
-    int mid = (ss + se) / 2;
+		st[si] = func(st[2 * si], st[2 * si + 1]);
+	}
 
-    if (qi <= mid)
-        point_update(2 * si, ss, mid, qi);
-    else
-        point_update(2 * si + 1, mid + 1, se, qi);
+public:
 
-    st[si] = func(st[2 * si], st[2 * si + 1]);
-}
+	SegTree(vl &a) {
+		n = sz(a);
+		arr = a;
+		st.resize(4 * n);
+		build(1, 1, n);
+	}
 
+	ll query(int qs, int qe) {
+		return query(1, 1, n, qs, qe);
+	}
+
+	void point_update(int idx, int val) {
+		arr[idx] = val;
+		point_update(1, 1, n, idx);
+	}
+
+};
