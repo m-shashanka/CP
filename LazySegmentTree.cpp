@@ -1,82 +1,100 @@
 /* Consider func() to be sum for below example */
 
-const int N = 100;
+class LazySegTree {
+	vl arr, st, lazy;
+	int n;
 
-int arr[N], st[4 * N], lazy[4 * N];
+	void build(int si, int ss, int se) {
+		if (ss == se) {
+			st[si] = arr[ss];
+			return;
+		}
 
-//call as build(1,1,arr_size);
-void build(int si, int ss, int se) {
-    if (ss == se) {
-        st[si] = arr[ss];
-        return;
-    }
+		int mid = (ss + se) / 2;
 
-    int mid = (ss + se) / 2;
+		build(2 * si, ss, mid);
+		build(2 * si + 1, mid + 1, se);
 
-    build(2 * si, ss, mid);
-    build(2 * si + 1, mid + 1, se);
+		st[si] = st[2 * si] + st[2 * si + 1];
+	}
 
-    st[si] = func(st[2 * si], st[2 * si + 1]);
-}
+	ll query(int si, int ss, int se, int qs, int qe) {
+		if (lazy[si] != 0) {
+			ll pending_update = lazy[si];
+			lazy[si] = 0;
+			st[si] = pending_update * (se - ss + 1);
 
-//call as query(1,1,n,query_start,query_end);
-int query(int si, int ss, int se, int qs, int qe) {
+			if (ss != se) {
+				lazy[2 * si] = pending_update;
+				lazy[2 * si + 1] = pending_update;
+			}
+		}
 
-    if (lazy[si] != 0) {
-        int pending_update = lazy[si];
-        lazy[si] = 0;
-        st[si] = pending_update * (se - ss + 1);
+		if (ss > qe || se < qs)
+			return 0;
 
-        if (ss != se) {
-            lazy[2 * si] = pending_update;
-            lazy[2 * si + 1] = pending_update;
-        }
-    }
+		if (ss >= qs && se <= qe)
+			return st[si];
 
-    if (ss > qe || se < qs)
-        return 0;
+		int mid = (ss + se) / 2;
 
-    if (ss >= qs && se <= qe)
-        return st[si];
+		return query(2 * si, ss, mid, qs, qe) + query(2 * si + 1, mid + 1, se, qs, qe);
+	}
 
-    int mid = (ss + se) / 2;
+	void range_update(int si, int ss, int se, int qs, int qe, ll val) {
 
-    return query(2 * si, ss, mid, qs, qe) + query(2 * si + 1, mid + 1, se, qs, qe);
-}
+		if (lazy[si] != 0) {
+			ll pending_update = lazy[si];
+			lazy[si] = 0;
+			st[si] = pending_update * (se - ss + 1);
 
-//call as range_update(1,1,n,query_start,query_end,value);
-void range_update(int si, int ss, int se, int qs, int qe, int val) {
+			if (ss != se) {
+				lazy[2 * si] = pending_update;
+				lazy[2 * si + 1] = pending_update;
+			}
+		}
 
-    if (lazy[si] != 0) {
-        int pending_update = lazy[si];
-        lazy[si] = 0;
-        st[si] = pending_update * (se - ss + 1);
+		if (ss > qe || se < qs)  return;
 
-        if (ss != se) {
-            lazy[2 * si] = pending_update;
-            lazy[2 * si + 1] = pending_update;
-        }
-    }
+		if (ss >= qs && se <= qe) {
+			ll update = (se - ss + 1) * val;
+			st[si] = update;
 
-    if (ss > qe || se < qs)  return;
+			if (ss != se) {
+				lazy[2 * si] = val;
+				lazy[2 * si + 1] = val;
+			}
+			return;
+		}
 
-    if (ss >= qs && se <= qe) {
-        int update = (se - ss + 1) * val;
-        st[si] = update;
+		int mid = (ss + se) / 2;
 
-        if (ss != se) {
-            lazy[2 * si] = val;
-            lazy[2 * si + 1] = val;
-        }
-        return;
-    }
+		range_update(2 * si, ss, mid, qs, qe, val);
+		range_update(2 * si + 1, mid + 1, se, qs, qe, val);
 
-    int mid = (ss + se) / 2;
+		st[si] = st[2 * si] + st[2 * si + 1];
+	}
 
-    range_update(2 * si, ss, mid, qs, qe, val);
-    range_update(2 * si + 1, mid + 1, se, qs, qe, val);
+public:
 
-    st[si] = st[2 * si] + st[2 * si + 1];
-}
+	LazySegTree(vl &a) {
+		n = sz(a) - 1;
+		arr = a;
+		st.resize(4 * n);
+		lazy.resize(4 * n);
+		build(1, 1, n);
+	}
 
+	ll query(int qs, int qe) {
+		return query(1, 1, n, qs, qe);
+	}
 
+	void point_update(int idx, ll val) {
+		range_update(1, 1, n, idx, idx, val);
+	}
+
+	void range_update(int qs, int qe, ll val) {
+		range_update(1, 1, n, qs, qe, val);
+	}
+
+};
