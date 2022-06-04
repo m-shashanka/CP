@@ -2,18 +2,6 @@ class SegTree {
 	vl arr, st;
 	int n;
 
-	ll query(int si, int ss, int se, int qs, int qe) {
-		if (ss > qe || se < qs)
-			return SOME_INVALID_DATA;
-
-		if (ss >= qs && se <= qe)
-			return st[si];
-
-		int mid = (ss + se) / 2;
-
-		return func(query(2 * si, ss, mid, qs, qe), query(2 * si + 1, mid + 1, se, qs, qe));
-	}
-
 	void build(int si, int ss, int se) {
 		if (ss == se) {
 			st[si] = arr[ss];
@@ -26,6 +14,18 @@ class SegTree {
 		build(2 * si + 1, mid + 1, se);
 
 		st[si] = func(st[2 * si], st[2 * si + 1]);
+	}
+
+	ll query(int si, int ss, int se, int qs, int qe) {
+		if (ss > qe || se < qs)
+			return SOME_INVALID_DATA;
+
+		if (ss >= qs && se <= qe)
+			return st[si];
+
+		int mid = (ss + se) / 2;
+
+		return func(query(2 * si, ss, mid, qs, qe), query(2 * si + 1, mid + 1, se, qs, qe));
 	}
 
 	void point_update(int si, int ss, int se, int qi) {
