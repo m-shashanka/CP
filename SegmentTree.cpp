@@ -57,7 +57,7 @@ public:
 		return query(1, 1, n, qs, qe);
 	}
 
-	void point_update(int idx, int val) {
+	void point_update(int idx, ll val) {
 		arr[idx] = val;
 		point_update(1, 1, n, idx);
 	}
