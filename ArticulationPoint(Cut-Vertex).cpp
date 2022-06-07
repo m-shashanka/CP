@@ -12,7 +12,7 @@ void dfs(int u, int p, vector<int> &vis, vector<int> &tin, vector<int> &low, int
 		if (v == p)
 			continue;
 		if (vis[v])
-			low[u] = min(low[u], low[v]);
+			low[u] = min(low[u], tin[v]);
 		else {
 			dfs(v, u, vis, tin, low, timer);
 			low[u] = min(low[u], low[v]);
