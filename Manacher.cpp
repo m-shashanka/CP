@@ -1,6 +1,6 @@
 //Manacher's Algo
 
-vector<int> manacher(string s) {
+vector<int> manacher(string &s) {
 	int n = (int)s.size();
 	vector<int> p(n);
 	//p[i] = longest palindrome centred at i of length 2*p[i]+1
