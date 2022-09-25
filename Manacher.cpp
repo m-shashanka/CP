@@ -15,6 +15,7 @@ vector<int> manacher(string &s) {
 			r = i + p[i];
 		}
 	}
+	return p;
 }
 
 int main() {
