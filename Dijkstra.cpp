@@ -10,7 +10,10 @@ void dijkstra(int s, int n)
     pq.push({0, s});
     while (!pq.empty()) {
         int u = pq.top().S;
+        int dist = pq.top().F;
         pq.pop();
+        if(dis[u] < dist) //this will not lead to any shortest path (invalid entry in pq)
+           continue;
         for (auto &v : G[u]) {
             if (dis[u] + v.S < dis[v.F]) {
                 dis[v.F] = dis[u] + v.S;
@@ -33,7 +36,10 @@ void dijkstra(int s, int n)
     pq.push({0, s});
     while (!pq.empty()) {
         int u = pq.top().S;
+        int dist = pq.top().F;
         pq.pop();
+        if(dis[u] < dist) //this will not lead to any shortest path (invalid entry in pq)
+           continue;
         for (auto &v : G[u]) {
             if (dis[u] + 1 < dis[v]) {
                 dis[v] = dis[u] + 1;
